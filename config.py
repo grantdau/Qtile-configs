@@ -59,6 +59,10 @@ keys = [
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    # Media keys
+    Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc="Play/Pause media"),
+    Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc="Next track"),
+    Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc="Previous track"),
     # Switch VTs in Wayland
     *[
         Key(
@@ -103,8 +107,7 @@ screens = [
                     chords_colors={"launch": ("#ff0000", "#ffffff")},
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press <M-r> to spawn", foreground="#d75f5f"),
+                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 widget.Systray(),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
                 widget.QuickExit(),
@@ -145,4 +148,3 @@ wl_input_rules = None
 wl_xcursor_theme = None
 wl_xcursor_size = 24
 wmname = "LG3D"
-
