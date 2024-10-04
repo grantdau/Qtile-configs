@@ -18,12 +18,12 @@ def float_mediawriter(window):
         window.cmd_toggle_floating()
 
 mod = "mod4"
-terminal = "/usr/bin/tilix"
+terminal = "alacritty"
 
 keys = [
     # Move window to next/previous monitor
-    Key(["mod4", "shift"], "Right", lazy.window.toscreen(0), desc="Move window to next monitor"),
-    Key(["mod4", "shift"], "Left", lazy.window.toscreen(1), desc="Move window to previous monitor"),
+    Key(["mod4", "shift"], "Left", lazy.window.toscreen(0), desc="Move window to next monitor"),
+    Key(["mod4", "shift"], "Right", lazy.window.toscreen(1), desc="Move window to previous monitor"),
     # Focus next/previous monitor
     Key(["mod4"], "Right", lazy.screen.next(), desc="Focus next monitor"),
     Key(["mod4"], "Left", lazy.screen.prev(), desc="Focus previous monitor"),
@@ -33,9 +33,10 @@ keys = [
     # Launch applications
     Key([mod, "shift"], "s", lazy.spawn("steam"), desc="Launch Steam"),
     Key([mod], "s", lazy.spawn("flatpak run com.spotify.Client"), desc="Launch Spotify"),
+    Key([mod], "d", lazy.spawn("flatpak run com.discordapp.Discord"), desc="Launch Discord"),
     Key([mod], "e", lazy.spawn("flatpak run com.tutanota.Tutanota"), desc="Launch Tutanota"),
-    Key([mod], "i", lazy.spawn("firefox"), desc="Launch Firefox"),
-    Key([mod], "r", lazy.spawn("rofi -show run"), desc="Launch Rofi"),
+    Key([mod], "i", lazy.spawn("brave-browser"), desc="Launch Brave Browser"),
+    Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Launch Rofi in drun mode"),
     # Window navigation
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
@@ -52,7 +53,7 @@ keys = [
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     Key([mod, "shift"], "Return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch Tilix"),
+    Key([mod], "Return", lazy.spawn(terminal), desc="Launch Alacritty"),
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen on the focused window"),
@@ -96,7 +97,8 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 screens = [
-    Screen(
+    Screen(),  # Primary screen without a bar
+    Screen(  # Secondary screen with the bar
         bottom=bar.Bar(
             [
                 widget.CurrentLayout(),
@@ -107,9 +109,8 @@ screens = [
                     chords_colors={"launch": ("#ff0000", "#ffffff")},
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Clock(format="%m/%d/%Y %a %I:%M %p"),
                 widget.QuickExit(),
             ],
             24,
