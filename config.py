@@ -1,5 +1,3 @@
-# Qtile Configuration File
-
 import os
 from libqtile import bar, layout, qtile, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -25,18 +23,15 @@ terminal = "alacritty"
 # --- Keybindings ---
 keys = [
     # Monitor control
-    Key(["mod4", "shift"], "Left", lazy.window.toscreen(0), desc="Move window to next monitor"),
-    Key(["mod4", "shift"], "Right", lazy.window.toscreen(1), desc="Move window to previous monitor"),
-    Key(["mod4"], "Right", lazy.screen.next(), desc="Focus next monitor"),
-    Key(["mod4"], "Left", lazy.screen.prev(), desc="Focus previous monitor"),
+    # Corrected: Left moves to DP-2 (screen 1), Right moves to HDMI-0 (screen 0)
+    Key(["mod4", "shift"], "Right", lazy.window.toscreen(0), desc="Move window to HDMI-0"),
+    Key(["mod4", "shift"], "Left", lazy.window.toscreen(1), desc="Move window to DP-2"),
     Key(["mod4"], "period", lazy.next_screen(), desc="Move focus to next monitor"),
     Key(["mod4"], "comma", lazy.prev_screen(), desc="Move focus to previous monitor"),
 
     # Application launching
     Key([mod, "shift"], "s", lazy.spawn("steam"), desc="Launch Steam"),
     Key([mod], "s", lazy.spawn("flatpak run com.spotify.Client"), desc="Launch Spotify"),
-    Key([mod], "d", lazy.spawn("flatpak run com.discordapp.Discord"), desc="Launch Discord"),
-    Key([mod], "e", lazy.spawn("flatpak run com.tutanota.Tutanota"), desc="Launch Tutanota"),
     Key([mod], "i", lazy.spawn("brave-browser"), desc="Launch Brave Browser"),
     Key([mod], "r", lazy.spawn("rofi -show drun"), desc="Launch Rofi in drun mode"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch Alacritty"),
@@ -103,8 +98,7 @@ extension_defaults = widget_defaults.copy()
 
 # --- Screens ---
 screens = [
-    Screen(),  # Primary screen without a bar
-    Screen(  # Secondary screen with the bar
+    Screen(  # Primary screen with the bar (HDMI-0)
         bottom=bar.Bar(
             [
                 widget.CurrentLayout(),
@@ -122,6 +116,7 @@ screens = [
             24,
         ),
     ),
+    Screen(),  # Secondary screen without a bar (DP-2)
 ]
 
 # --- Mouse bindings ---
